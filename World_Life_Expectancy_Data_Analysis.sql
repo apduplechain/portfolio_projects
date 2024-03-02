@@ -8,8 +8,8 @@ FROM world_life_expectancy
 # All countries min and max life expectancy
 SELECT 
 	country, 
-    MIN(`Life expectancy`), 
-    MAX(`Life expectancy`),
+    MIN(`Life expectancy`) AS Life_Expectancy_Min, 
+    MAX(`Life expectancy`) AS Life_Expectancy_Max,
     ROUND(MAX(`Life expectancy`) - MIN(`Life expectancy`),1) AS Life_Increase_15_Years
 FROM world_life_expectancy
 GROUP BY country
@@ -19,7 +19,7 @@ ORDER BY Life_Increase_15_Years ASC
 ;
 
 # Average life expectancy year over year
-SELECT year, ROUND(AVG(`Life expectancy`),2)
+SELECT year, ROUND(AVG(`Life expectancy`),2) AS Avg_Life_Expectancy
 FROM world_life_expectancy
 WHERE `Life expectancy` <> 0
 AND `Life expectancy` <> 0
@@ -47,13 +47,13 @@ ORDER BY GDP
 ;
 
 # Average life expectancy for developing and developed countries
-SELECT status, ROUND(AVG(`Life expectancy`),1)
+SELECT status, ROUND(AVG(`Life expectancy`),1) AS Avg_Life_Expectancy
 FROM world_life_expectancy
 GROUP BY status
 ;
 
 # Count of developed and developing countries with average life expectancy
-SELECT status, COUNT(DISTINCT country), ROUND(AVG(`Life expectancy`),1)
+SELECT status, COUNT(DISTINCT country) AS Country_Count, ROUND(AVG(`Life expectancy`),1) AS Avg_Life_Expectancy
 FROM world_life_expectancy
 GROUP BY status
 ;
