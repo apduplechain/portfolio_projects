@@ -27,8 +27,8 @@ GROUP BY year
 ORDER BY year
 ;
 
-# Average life expectancy and GDP per country
-SELECT country, ROUND(AVG(`Life expectancy`),1) AS Life_Exp, ROUND(AVG(GDP),1) AS GDP
+# Average life expectancy, BMI, and GDP per country
+SELECT country, ROUND(AVG(`Life expectancy`),1) AS Life_Exp, ROUND(AVG(GDP),1) AS GDP, ROUND(AVG(BMI),1) AS BMI
 FROM world_life_expectancy
 GROUP BY country
 HAVING Life_Exp > 0
@@ -44,6 +44,22 @@ SELECT
     AVG(CASE WHEN GDP <= 1500 THEN `Life expectancy` ELSE NULL END) Low_GDP_Life_Expectancy
 FROM world_life_expectancy
 ORDER BY GDP
+;
+
+# High GDP vs high life expectancy and low GDP vs low life expectancy
+SELECT
+	country,
+	ROUND(AVG(`Life expectancy`),1) AS Avg_Life_Expectancy,
+    ROUND(AVG(GDP),1) AS Avg_GDP
+FROM world_life_expectancy
+GROUP BY country
+HAVING ROUND(AVG(GDP),1) > 1
+ORDER BY 3 DESC
+;
+
+# High GDP vs high life expectancy and low GDP vs low life expectancy
+SELECT *
+FROM world_life_expectancy
 ;
 
 # Average life expectancy for developing and developed countries
@@ -75,5 +91,4 @@ SELECT
     `Adult Mortality`,
     SUM(`Adult Mortality`) OVER(PARTITION BY country ORDER BY year) AS Rolling_Total
 FROM world_life_expectancy
-WHERE country LIKE '%United%'
 ;
